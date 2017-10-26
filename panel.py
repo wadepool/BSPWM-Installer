@@ -59,7 +59,7 @@ def end_install():
 
 def cleanup():
     #Cleanup Files
-    print "Cleaning Up...",  
+    print "Cleaning Up...",
     os.system("rm -rf %s" %tmp_dir)
     print "Done"
 
@@ -73,7 +73,7 @@ def find_string(file, search_str):
     for line in fileinput.FileInput(file, inplace=1):
 	if search_str in line:
 	    return 1
-    return 0	
+    return 0
 
 def set_bg(distro):
     with open("%s/bspwmrc" %bspwm_scripts_dir, "a") as bspwmrc_file:
@@ -89,8 +89,8 @@ def write_string_to_file(file_loc, write_str):
 	if os.path.isfile('%s' %file_loc):
 		with open('%s' %file_loc, 'r') as xinitrc:
 			#make sure the given string does not already exist in the file
-			for line in xinitrc:		
-				if "%s" %search_str[0] in line: 
+			for line in xinitrc:
+				if "%s" %search_str[0] in line:
 					string_exists = 1
 	#append string to file
 	with open('%s' %file_loc, 'a') as xinitrc:
@@ -128,7 +128,7 @@ else:
         distro = "ubuntu"
     else:
         distro = "linux"
-        
+
 #Make dir for temp files
 print "Initializing Temporary Directory...",
 mkdir(tmp_dir)
@@ -137,8 +137,8 @@ print "Done."
 
 install_panel = raw_input("Would you like to install a panel? (y/n) ")
 if install_panel != "y":
-    end_install()  
-    
+    end_install()
+
 print("Select panel:\n"
       "1.) LemonBar")
 pick_panel = raw_input("> ")
@@ -174,10 +174,10 @@ mkdir(panel_scripts_dir)
 
 os.system("cp %s/panel %s/panel" %(panel_config_dir, panel_scripts_dir))
 os.system("cp %s/panel_bar %s/panel_bar" %(panel_config_dir, panel_scripts_dir))
-os.system("cp %s/panel_colors %s/panel_colors" %(panel_config_dir, panel_scripts_dir))  
+os.system("cp %s/panel_colors %s/panel_colors" %(panel_config_dir, panel_scripts_dir))
 
 #make panel & panel_bar execuatable
-os.system("chmod +x %s/panel %s/panel_bar" 
+os.system("chmod +x %s/panel %s/panel_bar"
         %(panel_scripts_dir, panel_scripts_dir))
 
 #If we built the older version of bspwm to workaround the xserver bug,
@@ -223,17 +223,28 @@ pick_term = input("Select Terminal for Installation:\n"
                         "> ")
 
 #TODO - make this work for other distros
-if pick_term == 1:
-    os.system("sudo %s xterm" %debian_pm)
-elif pick_term ==2:
-    os.system("sudo %s zsh" %debian_pm)
-elif pick_term == 3:
-    os.system("sudo %s xfce" %debian_pm)
-elif pick_term == 4:
-    os.system("sudo %s rxvt" %debian_pm)
-else:    
-    end_install()
-
+if distro != ("Debian", "*", "*"):
+    if pick_term == 1:
+        os.system("sudo %s xterm" %arch_pm)
+    elif pick_term ==2:
+        os.system("sudo %s zsh" %arch_pm)
+    elif pick_term == 3:
+        os.system("sudo %s xfce" %arch_pm)
+    elif pick_term == 4:
+        os.system("sudo %s rxvt" %arch_pm)
+    else:
+        end_install()
+else:
+    if pick_term == 1:
+        os.system("sudo %s xterm" %debian_pm)
+    elif pick_term ==2:
+        os.system("sudo %s zsh" %debian_pm)
+    elif pick_term == 3:
+        os.system("sudo %s xfce" %debian_pm)
+    elif pick_term == 4:
+        os.system("sudo %s rxvt" %debian_pm)
+    else:
+        end_install()
 #Modify sxhkd to use new terminal
 #TODO - make func to do this and call above
 
